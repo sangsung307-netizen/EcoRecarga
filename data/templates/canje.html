@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoRecarga - Canje de Recompensas</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0F172A; /* Fondo Azul Pizarra Oscuro (Eco-Tech) */
+            color: #F8FAFC;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .header-card {
+            background-color: #1E293B;
+            border: 1px solid #38BDF8;
+            border-radius: 10px;
+            padding: 15px 20px;
+        }
+        .puntos-badge {
+            color: #FBBF24; /* Dorado para destacar los puntos */
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .reward-card {
+            background-color: #1E293B;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+        }
+        .reward-title {
+            color: #38BDF8;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .btn-canjear {
+            background-color: #00BFA5; /* Verde Turquesa Eco-Tech */
+            color: #0F172A;
+            font-weight: bold;
+            border: none;
+            padding: 6px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+        .btn-canjear:hover {
+            background-color: #10B981;
+            color: #0F172A;
+        }
+        .btn-bloqueado {
+            background-color: #475569;
+            color: #94A3B8;
+            border: none;
+            padding: 6px 15px;
+            border-radius: 6px;
+        }
+        .texto-estado {
+            color: #94A3B8;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mt-5" style="max-width: 650px;">
+        
+        <!-- Encabezado con Puntos del Usuario -->
+        <div class="header-card d-flex justify-content-between align-items-center mb-4">
+            <h5 class="m-0">🎁 CANJE DE RECOMPENSAS</h5>
+            <span class="puntos-badge">⭐ TUS PUNTOS: <span id="user-points">{{ puntos_usuario|default:"450" }}</span> pts</span>
+        </div>
+
+        <!-- Contenedor de la lista de recompensas -->
+        <div id="rewards-list">
+            
+            <!-- Si Django envía las recompensas desde la base de datos -->
+            {% if recompensas %}
+                {% for recompensa in recompensas %}
+                <div class="reward-card">
+                    <div class="reward-title mb-2">{{ recompensa.nombre }}</div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="texto-estado">Costo: {{ recompensa.costo }} pts —> </span>
+                            {% if puntos_usuario >= recompensa.costo %}
+                                <span class="text-success fw-bold" style="font-size: 0.9rem;">(Disponible)</span>
+                            {% else %}
+                                <span class="texto-estado">(Faltan {{ recompensa.costo|add:"-450" }} pts)</span>
+                            {% endif %}
+                        </div>
+                        
+                        {% if puntos_usuario >= recompensa.costo %}
+                            <button class="btn btn-canjear" onclick="realizarCanje('{{ recompensa.id }}', '{{ recompensa.nombre }}', {{ recompensa.costo }})">¡Canjear!</button>
+                        {% else %}
+                            <button class="btn btn-bloqueado" disabled>Bloqueado</button>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+
+            <!-- Si aún no hay recompensas en Django (Estructura visual estática de prueba) -->
+            {% else %}
+                <div class="reward-card">
+                    <div class="reward-title mb-2">☕ Café gratis en cafetería local</div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="texto-estado">Costo: 300 pts —> </span>
+                            <span class="text-success fw-bold" style="font-size: 0.9rem;">(Disponible)</span>
+                        </div>
+                        <button class="btn btn-canjear" onclick="realizarCanje(1, 'Café gratis', 300)">¡Canjear!</button>
+                    </div>
+                </div>
+
+                <div class="reward-card">
+                    <div class="reward-title mb-2">🛍️ 20% de descuento en eco-tienda</div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="texto-estado">Costo: 500 pts —> </span>
+                            <span class="texto-estado">(Faltan 50 pts)</span>
+                        </div>
+                        <button class="btn btn-bloqueado" disabled>Bloqueado</button>
+                    </div>
+                </div>
+
+                <div class="reward-card">
+                    <div class="reward-title mb-2">🚌 Pasaje de autobús gratis</div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="texto-estado">Costo: 400 pts —> </span>
+                            <span class="text-success fw-bold" style="font-size: 0.9rem;">(Disponible)</span>
+                        </div>
+                        <button class="btn btn-canjear" onclick="realizarCanje(3, 'Pasaje de autobús', 400)">¡Canjear!</button>
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <script>
+        let puntosActuales = parseInt(document.getElementById('user-points').innerText) || 450;
+
+        function realizarCanje(id, nombre, costo) {
+            if (puntosActuales >= costo) {
+                puntosActuales -= costo;
+                document.getElementById('user-points').innerText = puntosActuales;
+                alert(`¡Canje exitoso!\nHas canjeado: ${nombre}\nTus puntos restantes: ${puntosActuales} pts`);
+            } else {
+                alert("No posees suficientes puntos para realizar este canje.");
+            }
+        }
+    </script>
+</body>
+</html>
