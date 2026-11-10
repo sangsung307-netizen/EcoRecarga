@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administrador - EcoRecarga</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 650px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+        .header {
+            background-color: #21262d;
+            padding: 20px;
+            border-bottom: 1px solid #30363d;
+        }
+        .header h1 {
+            font-size: 1.25rem;
+            color: #58a6ff;
+            font-weight: 600;
+        }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            padding: 15px 20px;
+            background-color: #0d1117;
+            border-bottom: 1px solid #30363d;
+            flex-wrap: wrap;
+        }
+        .btn-nav {
+            background-color: #21262d;
+            border: 1px solid #30363d;
+            color: #c9d1d9;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-nav:hover, .btn-nav.active {
+            background-color: #30363d;
+            border-color: #8b949e;
+        }
+        .form-content {
+            padding: 25px;
+        }
+        .form-title {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #8b949e;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+        .form-group {
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .form-group label {
+            width: 35%;
+            font-size: 0.9rem;
+            color: #c9d1d9;
+        }
+        .input-wrapper {
+            width: 65%;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .form-control {
+            width: 100%;
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: #c9d1d9;
+            padding: 10px 12px;
+            font-size: 0.9rem;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #58a6ff;
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3);
+        }
+        .unit {
+            font-size: 0.9rem;
+            color: #8b949e;
+        }
+        .divider {
+            border: none;
+            border-top: 1px dashed #30363d;
+            margin: 25px 0;
+        }
+        .points-summary {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #c9d1d9;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        .points-summary strong {
+            color: #3fb950;
+            font-size: 1.1rem;
+        }
+        .btn-submit {
+            width: 100%;
+            background-color: #238636;
+            border: 1px solid rgba(240, 246, 252, 0.1);
+            color: #ffffff;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-submit:hover {
+            background-color: #2ea043;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Cabecera -->
+        <div class="header">
+            <h1>PANEL DE ADMINISTRADOR - EcoRecarga</h1>
+        </div>
+
+        <!-- Botones de Navegación -->
+        <div class="nav-buttons">
+            <button class="btn-nav active">➕ Registrar Entrega</button>
+            <button class="btn-nav">📍 Gestionar Puntos</button>
+            <button class="btn-nav">📈 Reportes</button>
+        </div>
+
+        <!-- Formulario Principal -->
+        <div class="form-content">
+            <div class="form-title">REGISTRAR NUEVO PESAJE DE RECICLAJE:</div>
+
+            <form id="reciclajeForm" onsubmit="guardarPesaje(event)">
+                <!-- Campo de texto libre para ingresar el usuario/documento manualmente -->
+                <div class="form-group">
+                    <label for="usuario">Documento / Usuario:</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="usuario" class="form-control" placeholder="Ej. 10548923-2 (Carlos Pérez)" required>
+                    </div>
+                </div>
+
+                <!-- Punto de acopio con 3 sitios del Norte y 3 del Sur -->
+                <div class="form-group">
+                    <label for="acopio">Punto de Acopio:</label>
+                    <div class="input-wrapper">
+                        <select id="acopio" class="form-control">
+                            <optgroup label="Zona Norte">
+                                <option value="Centro de Acopio Norte Principal">Centro de Acopio Norte Principal</option>
+                                <option value="Sucursal Estadio Norte">Sucursal Estadio Norte</option>
+                                <option value="Terminal de Buses Norte">Terminal de Buses Norte</option>
+                            </optgroup>
+                            <optgroup label="Zona Sur">
+                                <option value="Centro de Acopio Sur Central">Centro de Acopio Sur Central</option>
+                                <option value="Sucursal Mercado Sur">Sucursal Mercado Sur</option>
+                                <option value="Punto Comunitario Sur San Rafael">Punto Comunitario Sur San Rafael</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="material">Tipo de Material:</label>
+                    <div class="input-wrapper">
+                        <select id="material" class="form-control" onchange="calcularPuntos()">
+                            <option value="10">Plástico (PET) - 10 pts/kg</option>
+                            <option value="5">Vidrio - 5 pts/kg</option>
+                            <option value="8">Papel/Cartón - 8 pts/kg</option>
+                            <option value="15">Aluminio - 15 pts/kg</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="peso">Peso Ingresado:</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="peso" class="form-control" value="3.5" step="0.1" min="0.1" oninput="calcularPuntos()">
+                        <span class="unit">kg</span>
+                    </div>
+                </div>
+
+                <hr class="divider">
+
+                <div class="points-summary">
+                    Puntos a asignar automáticamente: <strong id="totalPuntos">35 Puntos</strong>
+                </div>
+
+                <button type="submit" class="btn-submit">💾 Guardar y Acreditar Puntos</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Función para calcular dinámicamente los puntos
+        function calcularPuntos() {
+            const materialSelect = document.getElementById('material');
+            const pesoInput = document.getElementById('peso');
+            const totalPuntosSpan = document.getElementById('totalPuntos');
+
+            const tarifa = parseFloat(materialSelect.value) || 0;
+            const peso = parseFloat(pesoInput.value) || 0;
+
+            const resultado = Math.round(tarifa * peso);
+            totalPuntosSpan.textContent = resultado + " Puntos";
+        }
+
+        // Función que salta al guardar, mostrando el nombre/documento y detalles acreditados
+        function guardarPesaje(event) {
+            event.preventDefault(); // Evita que la página se recargue bruscamente
+            
+            const usuario = document.getElementById('usuario').value;
+            const acopio = document.getElementById('acopio').value;
+            const materialText = document.getElementById('material').options[document.getElementById('material').selectedIndex].text;
+            const peso = document.getElementById('peso').value;
+            const totalPuntos = document.getElementById('totalPuntos').textContent;
+
+            alert(`✅ ¡Puntos acreditados con éxito!\n\n• Ciudadano / Documento: ${usuario}\n• Sucursal: ${acopio}\n• Material: ${materialText}\n• Peso: ${peso} kg\n• Total Asignado: ${totalPuntos}`);
+            
+            // Opcional: limpiar el campo de usuario para el siguiente registro
+            document.getElementById('usuario').value = '';
+        }
+
+        // Calcular al cargar
+        window.onload = calcularPuntos;
+    </script>
+
+</body>
+</html>
