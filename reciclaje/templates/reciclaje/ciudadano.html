@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>EcoRecarga - Vista Ciudadano</title>
+    <style>
+        body {
+            background-color: #0F172A;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .contenedor {
+            border: 2px dashed #00BFA5;
+            padding: 20px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 600px;
+        }
+        .cabecera {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+        .puntos-destacados {
+            color: #FBBF24;
+            font-weight: bold;
+        }
+        .botones {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-top: 1px dashed #00B4D8;
+            border-bottom: 1px dashed #00B4D8;
+            padding: 15px 0;
+        }
+        .boton {
+            background-color: transparent;
+            color: white;
+            border: 1px solid white;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .boton:hover {
+            background-color: #00BFA5;
+            border-color: #00BFA5;
+        }
+        .titulo-seccion {
+            color: #00BFA5;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .punto-acopio {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="contenedor">
+    <div class="cabecera">
+        <span>| Bienvenido, {{ ciudadano.nombre }}</span>
+        <span class="puntos-destacados">Puntos: [ {{ ciudadano.puntos_acumulados }} pts ] |</span>
+    </div>
+
+<div class="botones">
+    <div class="boton">Ver Puntos de Reciclaje</div>
+    
+    <a href="{% url 'canje_recompensas' %}" style="text-decoration: none; color: inherit; display: block;">
+        <div class="boton">Canjear Recompensas</div>
+    </a>
+    
+    <div class="boton">Mi Impacto Ambiental</div>
+    <div class="boton">Historial de Reciclaje</div>
+</div>
+    <div class="titulo-seccion">
+        PUNTOS CERCANOS RECOMENDADOS:
+    </div>
+    <hr style="border-top: 1px dashed #A7F3D0;">
+
+    {% for punto in puntos_acopio %}
+    <div class="punto-acopio">
+        - <strong>{{ punto.nombre }} ({{ punto.direccion }})</strong><br>
+        &nbsp;&nbsp;Acepta: {{ punto.materiales_aceptados }} | Horario: {{ punto.horario_atencion }}
+    </div>
+    {% empty %}
+    <div class="punto-acopio">No hay puntos de acopio registrados.</div>
+    {% endfor %}
+
+</div>
+
+</body>
+</html>
