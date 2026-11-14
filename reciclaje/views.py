@@ -13,3 +13,15 @@ def vista_ciudadano(request):
 
 def canje_recompensas(request):
     return render(request, 'reciclaje/canje.html')
+
+def index(request):
+    return render(request, 'reciclaje/inicio.html')
+
+def login_ciudadano(request):
+    return render(request, 'reciclaje/login_ciudadano.html')
+
+def login_admin(request):
+    return render(request, 'reciclaje/login_admin.html')
+
+def registro_usuario(request):
+    return render(request, 'reciclaje/registro.html')
