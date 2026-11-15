@@ -4,10 +4,10 @@ Proyecto final de Programación Computacional III - UGB
 # EcoRecarga
 
 INTEGRANTES:
-Nancy Noemí González Rivas       SMSS013125
-Fátima Gabriela Pineda López     SMSS010425
-José Daniel Campos Vasquez       SMSS026325
-José Alexander Chicas Luna       SMSS028225
+Nancy Noemí González Rivas       SMSS013125,
+Fátima Gabriela Pineda López     SMSS010425,
+José Daniel Campos Vasquez       SMSS026325,
+José Alexander Chicas Luna       SMSS028225,
 
 DESCRIPCIÓN DEL PROYECTO
 
