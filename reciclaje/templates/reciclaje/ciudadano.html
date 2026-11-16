@@ -5,8 +5,8 @@
     <title>EcoRecarga - Vista Ciudadano</title>
     <style>
         body {
-            background-color: #0F172A;
-            color: white;
+            background-color: #F4F6F0;
+            color: #2D3729;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
@@ -14,20 +14,24 @@
             justify-content: center;
         }
         .contenedor {
-            border: 2px dashed #00BFA5;
+            background-color: #FFFFFF;
+            border: 2px dashed #4A7C59;
             padding: 20px;
             border-radius: 15px;
             width: 100%;
             max-width: 600px;
+            box-shadow: 0 8px 24px rgba(45, 55, 41, 0.08);
         }
         .cabecera {
             display: flex;
             justify-content: space-between;
             font-size: 1.2em;
             margin-bottom: 15px;
+            color: #2D3729;
+            font-weight: 600;
         }
         .puntos-destacados {
-            color: #FBBF24;
+            color: #4A7C59;
             font-weight: bold;
         }
         .botones {
@@ -35,30 +39,34 @@
             grid-template-columns: 1fr 1fr;
             gap: 10px;
             margin-bottom: 20px;
-            border-top: 1px dashed #00B4D8;
-            border-bottom: 1px dashed #00B4D8;
+            border-top: 1px dashed #C8D3C2;
+            border-bottom: 1px dashed #C8D3C2;
             padding: 15px 0;
         }
         .boton {
-            background-color: transparent;
-            color: white;
-            border: 1px solid white;
+            background-color: #F9FBF7;
+            color: #2D3729;
+            border: 1px solid #4A7C59;
             padding: 10px;
             text-align: center;
             border-radius: 5px;
             cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s, color 0.2s;
         }
         .boton:hover {
-            background-color: #00BFA5;
-            border-color: #00BFA5;
+            background-color: #4A7C59;
+            border-color: #4A7C59;
+            color: #FFFFFF;
         }
         .titulo-seccion {
-            color: #00BFA5;
+            color: #4A7C59;
             font-weight: bold;
             margin-bottom: 10px;
         }
         .punto-acopio {
             margin-bottom: 15px;
+            color: #2D3729;
         }
     </style>
 </head>
@@ -83,7 +91,7 @@
     <div class="titulo-seccion">
         PUNTOS CERCANOS RECOMENDADOS:
     </div>
-    <hr style="border-top: 1px dashed #A7F3D0;">
+    <hr style="border: none; border-top: 1px dashed #C8D3C2; margin-bottom: 15px;">
 
     {% for punto in puntos_acopio %}
     <div class="punto-acopio">
